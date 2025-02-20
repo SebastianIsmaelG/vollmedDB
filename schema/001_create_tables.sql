@@ -1,13 +1,12 @@
 create database if not exists `vollmed`;
 
-use `vollmed`
+use `vollmed`;
 --
 -- Base de datos: `vollmed`
 --
---falta columna de establecimiento fk a medico y consulta
 -- --------------------------------------------------------
---
--- Estructura de tabla para la tabla `medicacion`
+-- FALTA LA TABLA ESTABLECIMIENTOS, HACER FK DE MEDICOS Y CONSULTA
+-- Estructura de tabla para la tabla `medicamentos`
 --
 CREATE TABLE
     `medicamentos` (
@@ -24,7 +23,7 @@ CREATE TABLE
 --
 CREATE TABLE
     `salud_previsionales` (
-        `id` int NOT NULL,
+        `id` INT NOT NULL COMMENT 'id de salud previsional',
         `nombre` varchar(100) NOT NULL COMMENT 'Nombre de la institucion prestadora de servicios'
     ) DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci;
 
@@ -34,7 +33,7 @@ CREATE TABLE
 --
 CREATE TABLE
     `pacientes` (
-        `id` bigint NOT NULL,
+        `id` bigint NOT NULL COMMENT 'id del paciente',
         `primer_nombre` varchar(100) NOT NULL COMMENT 'Nombres del paciente',
         `segundo_nombre` varchar(100) DEFAULT NULL COMMENT 'Nombres del paciente',
         `primer_apellido` varchar(100) NOT NULL COMMENT 'Apellidos del paciente',
@@ -80,7 +79,7 @@ CREATE TABLE
 --
 CREATE TABLE
     `receta_medica` (
-        `id` bigint not null 'id receta médica',
+        `id` bigint NOT NULL COMMENT 'id receta médica',
         `id_consulta` bigint NOT NULL COMMENT 'id de la consulta asociada',
         `instrucciones` TEXT COMMENT 'Instrucciones para el paciente'
     ) DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci;
@@ -110,7 +109,7 @@ CREATE TABLE
         `motivo_consulta` TEXT COMMENT 'Motivo de la consulta (anamnesis)',
         `diagnostico` TEXT COMMENT 'Diagnóstico del médico',
         `procedimiento` TEXT COMMENT 'Procedimiento realizado',
-        `id_receta_medica` bigint COMMENT 'id referencia a la receta médica (FK de receta_medicac.id)'
+        `id_receta_medica` bigint COMMENT 'id referencia a la receta médica (FK de receta_medica.id)'
     ) DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -121,8 +120,8 @@ CREATE TABLE
     `receta_medicacion` (
         `id` bigint NOT NULL COMMENT 'id relación receta-medicación',
         `id_receta_medica` bigint NOT NULL COMMENT 'id de la receta médica',
-        `id_medicacion` bigint NOT NULL COMMENT 'id del medicamento',
+        `id_medicamento` bigint NOT NULL COMMENT 'id del medicamento',
         `dosis` VARCHAR(100) COMMENT 'Dosis del medicamento',
         `frecuencia` VARCHAR(100) COMMENT 'Frecuencia de administración',
-        `duracion` VARCHAR(100) COMMENT 'Duración del tratamiento',
+        `duracion` VARCHAR(100) COMMENT 'Duración del tratamiento'
     ) DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci;
