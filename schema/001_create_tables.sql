@@ -5,14 +5,39 @@ use `vollmed`;
 -- Base de datos: `vollmed`
 --
 -- --------------------------------------------------------
--- FALTA LA TABLA ESTABLECIMIENTOS, HACER FK DE MEDICOS Y CONSULTA
+-- 
 -- Estructura de tabla para la tabla `medicamentos`
 --
+CREATE TABLE 
+    `establecimientos` (
+        `id` int NOT NULL COMMENT 'id del establecimiento',
+        `nombre` varchar(100) NOT NULL COMMENT 'Nombre del establecimiento',
+        `direccion` varchar(100) NOT NULL COMMENT 'Direccion del establecimiento',
+        `telefono` varchar(25) NOT NULL COMMENT 'Contacto telefonico del establecimiento',
+        `email` varchar(100) NOT NULL COMMENT 'Email del establecimiento'
+    )DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+-- 
+-- Estructura de tabla para la tabla `box_atenciones`
+--
+CREATE TABLE 
+    `box_atenciones` (
+        `id` int NOT NULL COMMENT 'id del box',
+        `nombre` varchar(100) NOT NULL COMMENT 'Nombre del box',
+        `tipo` ENUM ('sala', 'area', 'box') COMMENT 'Estilo o uso de la seccion de atencion',
+        `ubicacion` int NOT NULL COMMENT 'id del establecimiento ubicado',
+        `estado` ENUM ('activa','inactiva','mantenimiento') COMMENT 'Estado de la seccion'
+    )DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
 CREATE TABLE
     `medicamentos` (
         `id` bigint NOT NULL COMMENT 'id del medicamento',
-        `nombre` varchar(100) NOT NULL COMMENT 'nombre del medicamento',
-        `laboratorio` varchar(100) NOT NULL COMMENT 'marca de laboratorio',
+        `nombre` varchar(100) NOT NULL COMMENT 'Nombre del medicamento',
+        `laboratorio` varchar(100) NOT NULL COMMENT 'Marca de laboratorio',
         `forma_de_uso` varchar(100) NOT NULL COMMENT 'Metodo de uso/ consumo del medicamento',
         `descripcion` text NOT NULL COMMENT 'Informacion relevante sobre el uso del medicamento'
     ) DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci;
@@ -53,7 +78,7 @@ CREATE TABLE
 --
 CREATE TABLE
     `medicos` (
-        `id` bigint NOT NULL COMMENT 'Id medicos',
+        `id` bigint NOT NULL COMMENT 'id medicos',
         `primer_nombre` varchar(50) NOT NULL COMMENT 'Nombres del funcionario',
         `segundo_nombre` varchar(50) DEFAULT NULL COMMENT 'Nombres del funcionario',
         `primer_apellido` varchar(50) NOT NULL COMMENT 'Apellidos del funcionario',
@@ -70,7 +95,8 @@ CREATE TABLE
         `ciudad` varchar(100) NOT NULL COMMENT 'Ciudad en la que se encuentra domiciliado el funcionario',
         `domicilio` varchar(120) DEFAULT NULL COMMENT 'Numero y calle donde se encuentra domiciliado el funcionario',
         `estado_laboral` ENUM ('activo', 'licencia', 'retirado') NOT NULL COMMENT 'Estado laboral del funcionario',
-        `ingreso_funciones` date NOT NULL COMMENT 'Fecha del ingreso de labores del funcionario'
+        `ingreso_funciones` date NOT NULL COMMENT 'Fecha del ingreso de labores del funcionario',
+        `box_asignado` int NOT NULL COMMENT 'id de la seccion de atencion al que fue asignado'
     ) DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -91,9 +117,10 @@ CREATE TABLE
 CREATE TABLE
     `consultas` (
         `id` bigint NOT NULL COMMENT 'id consultas',
+        `fecha` datetime NOT NULL COMMENT 'Fecha ingreso del procedimiento',
         `id_medico` bigint NOT NULL COMMENT 'id medico',
         `id_paciente` bigint NOT NULL COMMENT 'id paciente',
-        `fecha` datetime NOT NULL COMMENT 'Fecha ingreso del procedimiento',
+        `box_asignado` int NOT NULL COMMENT 'id del box de atencion en el que fue realizada la consulta',
         `estado` ENUM ('ingresado', 'en_curso', 'completado') DEFAULT 'ingresado' COMMENT 'Estado de la consulta (Ingresado/En Curso/Completado)',
         `signos_vitales` JSON COMMENT 'Signos vitales del paciente',
         `peso` DECIMAL(5, 2) COMMENT 'Peso del paciente en kg',
